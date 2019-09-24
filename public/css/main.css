@@ -1,0 +1,16 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: #eee;
+}
+.fluid-container {
+    padding: 15px;
+}
+.tasks-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+.tasks-list .card {
+    margin: 0.5em;
+}

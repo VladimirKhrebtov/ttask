@@ -1,0 +1,22 @@
+<%- include("includes/head.ejs"); %>
+<%- include("includes/header.ejs"); %>
+<main>
+    <div class="fluid-container">
+        <form action="/add-task" method="POST">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Task name</label>
+                <input name="title" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="First Name">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Task short description</label>
+                <input name="shortdescr" type="text" class="form-control" id="exampleInputPassword1" placeholder="Short task description" maxlength="30">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Task full description</label>
+                <input name="fulldescr" type="text" class="form-control" id="exampleInputPassword1" placeholder="Full task description">
+            </div>
+            <button type="submit" class="btn btn-primary">Add New Task</button>
+        </form>
+    </div>
+</main>
+<%- include("includes/footer.ejs"); %>
