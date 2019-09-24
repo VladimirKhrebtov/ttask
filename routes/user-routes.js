@@ -30,7 +30,7 @@ router.post('/add-task', (req, res, next) => {
         const existingData = JSON.parse(data);
 
         existingData.push({
-            firstname: req.body.title,
+            title: req.body.title,
             shortdescr: req.body.shortdescr,
             fulldescr: req.body.fulldescr,
             id: existingData.length + 1
