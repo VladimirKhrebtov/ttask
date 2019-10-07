@@ -1,10 +1,7 @@
-const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const router = express.Router();
 
-
-router.get('/tasks', (req, res, next) => {
+exports.getTasks = (req, res, next) => {
     fs.readFile('tasks.json', (err, data) => {
         if (err) throw new Error(err);
 
@@ -13,18 +10,17 @@ router.get('/tasks', (req, res, next) => {
             tasksList: JSON.parse(data)
         });
     });
+};
 
-});
-
-router.get('/add-task', (req, res, next) => {
+exports.getAddTask = (req, res, next) => {
     res.render('add-task', {
         pageTitle: 'Add new user'
     });
-});
+};
 
-router.post('/add-task', (req, res, next) => {
+exports.postAddTask = (req, res, next) => {
     // const writeStream = fs.createWriteStream('tasks.json', { flags: 'a'});
-    fs.readFile('tasks.json', 'utf8',  (err, data) => {
+    fs.readFile('tasks.json', 'utf8', (err, data) => {
         if (err) throw new Error(err);
 
         const existingData = JSON.parse(data);
@@ -41,6 +37,4 @@ router.post('/add-task', (req, res, next) => {
         });
     });
     res.redirect('/');
-});
-
-exports.router = router;
+};
