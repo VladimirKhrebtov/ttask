@@ -11,10 +11,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-const userRoutes = require('./routes/task-routes');
+const taskRoutes = require('./routes/task-routes');
 const indexRoutes = require('./routes/index-routes');
+const userRoutes = require('./routes/user-routes');
 
 app.use(userRoutes.router);
+app.use(taskRoutes.router);
 app.use(indexRoutes);
 
 app.get('/page-not-found', (req, res, next) => {
