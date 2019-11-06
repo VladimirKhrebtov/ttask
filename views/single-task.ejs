@@ -6,6 +6,12 @@
         <hr>
         <p><%= task.shortdescr %></p>
         <p><%= task.fulldescr %></p>
+        <% if(users) { %>
+            <h3>Users available for this task:</h3>
+            <% for (let user of users) { %>
+                <p><%= user.username %> <%= user.secondname %></p>
+            <% } %>
+        <% } %>
     </div>
 </main>
 <%- include("includes/footer.ejs"); %>
