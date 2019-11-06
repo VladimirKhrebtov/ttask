@@ -1,5 +1,3 @@
-const fs = require('fs');
-const path = require('path');
 const User = require('../models/user');
 
 exports.addUserController = (req, res, next) => {
@@ -19,7 +17,7 @@ exports.getAllUsersController = (req, res, next) => {
         if (users.toString()) {
             res.render('users-list', {
                 pageTitle: 'Users list',
-                usersList: JSON.parse(users)
+                usersList: users
             });
         } else {
             res.render('users-list', {
@@ -27,5 +25,14 @@ exports.getAllUsersController = (req, res, next) => {
                 usersList: undefined
             });
         }
+    })
+};
+
+exports.getSingleUser = (req, res, next) => {
+    User.fetchSingleUser(req.params.id, user => {
+        res.render('single-user', {
+            pageTitle: req.body.username,
+            user: user
+        })
     })
 };

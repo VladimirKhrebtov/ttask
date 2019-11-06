@@ -1,13 +1,12 @@
-const path = require('path');
-const fs = require('fs');
 const Task = require('../models/task');
 
 exports.getTasks = (req, res, next) => {
-    Task.fetchTasks((tasks) => {
+    Task.fetchAllTasks((tasks) => {
         if(tasks.toString()) {
+            console.log();
             res.render('tasks-list', {
                 pageTitle: 'Tasks list',
-                tasksList: JSON.parse(tasks)
+                tasksList: tasks
             });
         } else {
             res.render('tasks-list', {
@@ -24,8 +23,16 @@ exports.getAddTask = (req, res, next) => {
     });
 };
 
+exports.getSingleTask = (req, res, next) => {
+    Task.fetchSingleTask(req.params.id, task => {
+        res.render('single-task', {
+            pageTitle: task.title,
+            task: task
+        });
+    })
+};
+
 exports.postAddTask = (req, res, next) => {
-    // const writeStream = fs.createWriteStream('tasks.json', { flags: 'a'});
     const task = new Task(req.body);
     task.save();
 

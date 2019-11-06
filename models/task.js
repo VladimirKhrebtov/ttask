@@ -1,35 +1,33 @@
-const products = [];
+const saveObjectToFile = require('../utils/utilities');
 const fs = require('fs');
+
+const getTasksFromFile = cb => {
+    fs.readFile('tasks.json', (err, data) => {
+        if (err || !data.toString()) cb([]);
+        cb(JSON.parse(data.toString()));
+    });
+}
 
 module.exports = class Task {
     constructor(params) {
         this.title = params.title;
         this.shortdescr = params.shortdescr;
         this.fulldescr = params.fulldescr;
-        this.id = params.id;
     }
 
     save() {
-        fs.readFile('tasks.json', 'utf8', (err, data) => {
-            if (err) throw new Error(err);
-            if (!data.toString()) {
-                fs.writeFile('tasks.json', JSON.stringify([this]), 'utf8', (err, data) => {
-                    if (err) throw new Error(err);
-                });
-            } else {
-                const existingData = JSON.parse(data);
-                existingData.push(this);
-                fs.writeFile('tasks.json', JSON.stringify(existingData), 'utf8', (err, data) => {
-                    if (err) throw new Error(err);
-                });
-            }
-        });
+        this.id = ((Math.random() * 100).toFixed(0)).toString();
+        saveObjectToFile('tasks.json', this);
     }
 
-    static fetchTasks(cb) {
-        fs.readFile('tasks.json', (err, data) => {
-            if (err) cb([]);
-            cb(data);
+    static fetchAllTasks(cb) {
+        getTasksFromFile(cb);
+    }
+
+    static fetchSingleTask(id, cb) {
+        getTasksFromFile((tasks) => {
+            const task = tasks.find(t =>  t.id === id);
+            cb(task);
         });
     }
 };

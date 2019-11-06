@@ -1,4 +1,12 @@
 const fs = require('fs');
+const saveObjectToFile = require('../utils/utilities');
+
+const getUsersFromFile = cb => {
+    fs.readFile('users.json', (err, data) => {
+        if (err || !data.toString()) cb([]);
+        cb(JSON.parse(data.toString()));
+    })
+}
 
 module.exports = class User {
     constructor(params) {
@@ -8,26 +16,18 @@ module.exports = class User {
     }
 
     save() {
-        fs.readFile('users.json', 'utf8', (err, data) => {
-            if (err) throw new Error(err);
-            if (!data.toString()) {
-                fs.writeFile('users.json', JSON.stringify([this]), 'utf8', (err, data) => {
-                    if (err) throw new Error(err);
-                });
-            } else {
-                const existingData = JSON.parse(data);
-                existingData.push(this);
-                fs.writeFile('users.json', JSON.stringify(existingData), 'utf8', (err, data) => {
-                    if (err) throw new Error(err);
-                });
-            }
-        });
+        this.id = (Math.random() * 100).toFixed(0);
+        saveObjectToFile('users.json', this);
     }
 
     static fetchUsers(cb) {
-        fs.readFile('users.json', (err, data) => {
-            if (err) cb([]);
-            cb(data);
-        });
+        getUsersFromFile(cb);
+    }
+
+    static fetchSingleUser(id, cb) {
+        getUsersFromFile(users => {
+            const user = users.find(u => u.id === id);
+            cb(user);
+        })
     }
 }

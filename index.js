@@ -25,8 +25,8 @@ app.get('/page-not-found', (req, res, next) => {
     });
 });
 
-app.use('/', (req, res, next) => {
-    res.redirect('/page-not-found');
-});
+// app.use('/', (req, res, next) => {
+//     res.redirect('/page-not-found');
+// });
 
 app.listen(PORT, () => { console.log(`Port is running on port ${PORT}`)});
