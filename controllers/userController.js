@@ -17,7 +17,7 @@ exports.getAllUsersController = (req, res, next) => {
         if (users.toString()) {
             res.render('users-list', {
                 pageTitle: 'Users list',
-                usersList: users
+                usersList: JSON.parse(users)
             });
         } else {
             res.render('users-list', {

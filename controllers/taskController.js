@@ -30,7 +30,7 @@ exports.getSingleTask = (req, res, next) => {
             res.render('single-task', {
                 pageTitle: task.title,
                 task: task,
-                users: users
+                users: JSON.parse(users)
             });
         });
     })

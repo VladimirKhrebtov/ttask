@@ -1,10 +1,10 @@
 const fs = require('fs');
-const saveObjectToFile = require('../utils/utilities');
+const saveObjectToFile = require('../utils/check');
 
 const getUsersFromFile = cb => {
     fs.readFile('users.json', (err, data) => {
         if (err || !data.toString()) cb([]);
-        cb(JSON.parse(data.toString()));
+        cb(data);
     })
 }
 
