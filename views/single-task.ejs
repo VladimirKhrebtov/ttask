@@ -6,11 +6,15 @@
         <hr>
         <p><%= task.shortdescr %></p>
         <p><%= task.fulldescr %></p>
+        <a href="/add-task/<%= task.id %>?edit=true" class="btn btn-primary">Edit Task</a>
+        <hr>
         <% if(users) { %>
             <h3>Users available for this task:</h3>
             <% for (let user of users) { %>
                 <p><%= user.username %> <%= user.secondname %></p>
             <% } %>
+        <% } else { %>
+        <h3>No users available for this task</h3>
         <% } %>
     </div>
 </main>
