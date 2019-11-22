@@ -2,7 +2,7 @@
 <%- include("includes/header.ejs"); %>
 <main>
     <div class="fluid-container">
-        <form action=" <% if(editable) { %>/edit-task/<%= task.id %><% } else { %>/add-task<% } %>" method="POST">
+        <form action=" <% if(editable) { %>/edit-task/<%= task._id %><% } else { %>/add-task<% } %>" method="POST">
             <div class="form-group">
                 <label for="exampleInputEmail1">Task name</label>
                 <input name="title"

@@ -1,6 +1,5 @@
-const saveObjectToFile = require('../utils/check');
-const updateObjectInFile = require('../utils/utilities');
-const fs = require('fs');
+const mongodb = require('mongodb');
+const getDb = require('../utils/database');
 
 const getTasksFromFile = cb => {
     fs.readFile('tasks.json', (err, data) => {
@@ -17,31 +16,45 @@ module.exports = class Task {
     }
 
     save() {
-        this.id = ((Math.random() * 100).toFixed(0)).toString();
-        saveObjectToFile('tasks.json', this);
+        const db = getDb.getDb();
+        db.collection('tasks').insertOne(this)
+            .then(result => {
+                // console.log(result);
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
-    update(id) {
-        this.id = id;
-        Task.fetchAllTasks(tasks => {
-            const existingTasks = JSON.parse(tasks);
-            const updatedTask = existingTasks.find( t => t.id === id );
-            const updatedTaskIndex = existingTasks.indexOf(updatedTask);
-            existingTasks.splice(updatedTaskIndex, 1, this);
-            updateObjectInFile('tasks.json', existingTasks);
-        })
+    static update(id, params) {
+        console.log(params);
+        const db = getDb.getDb();
+        return db.collection('tasks').updateOne({_id: mongodb.ObjectId(id)}, { $set: params });
     }
 
-    static fetchAllTasks(cb) {
-        getTasksFromFile(cb);
+    static fetchAllTasks() {
+        const db = getDb.getDb();
+
+        return db.collection('tasks').find()
+            .toArray()
+            .then(result => {
+                return result;
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
-    static fetchSingleTask(id, cb) {
-        getTasksFromFile((tasks) => {
-            const existingTasks = JSON.parse(tasks);
-            const task = existingTasks.find(t =>  t.id === id);
-            console.log(existingTasks.indexOf(task));
-            cb(task);
-        });
+    static fetchSingleTask(id) {
+        const db = getDb.getDb();
+
+        return db.collection('tasks').find({_id: new mongodb.ObjectId(id)}).next()
+            .then(result => {
+                // console.log(result);
+                return result;
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 };

@@ -13,26 +13,28 @@ exports.postUserController = (req, res, next) => {
 };
 
 exports.getAllUsersController = (req, res, next) => {
-    User.fetchUsers((users) => {
-        if (users.toString()) {
+    User.fetchUsers()
+        .then(users => {
             res.render('users-list', {
                 pageTitle: 'Users list',
-                usersList: JSON.parse(users)
+                usersList: users
             });
-        } else {
-            res.render('users-list', {
-                pageTitle: 'Users list',
-                usersList: undefined
-            });
-        }
-    })
+        })
+        .catch(error => {
+            console.log(error);
+        })
 };
 
 exports.getSingleUser = (req, res, next) => {
-    User.fetchSingleUser(req.params.id, user => {
-        res.render('single-user', {
-            pageTitle: req.body.username,
-            user: user
+    User.fetchSingleUser(req.params.id)
+        .then(user => {
+            console.log(user);
+            res.render('single-user', {
+                pageTitle: req.body.username,
+                user: user
+            })
         })
-    })
+        .catch(error => {
+            console.log(error);
+        })
 };

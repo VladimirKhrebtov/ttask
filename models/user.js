@@ -1,12 +1,5 @@
-const fs = require('fs');
-const saveObjectToFile = require('../utils/check');
-
-const getUsersFromFile = cb => {
-    fs.readFile('users.json', (err, data) => {
-        if (err || !data.toString()) cb([]);
-        cb(data);
-    })
-}
+const getDb = require('../utils/database').getDb;
+const mongodb = require('mongodb');
 
 module.exports = class User {
     constructor(params) {
@@ -16,18 +9,39 @@ module.exports = class User {
     }
 
     save() {
-        this.id = (Math.random() * 100).toFixed(0);
-        saveObjectToFile('users.json', this);
+        const db = getDb();
+
+        db.collection('users').insertOne(this)
+            .then(result => {
+                return result;
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
-    static fetchUsers(cb) {
-        getUsersFromFile(cb);
+    static fetchUsers() {
+        const db = getDb();
+
+        return db.collection('users').find()
+            .toArray()
+            .then(result => {
+                return result
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
-    static fetchSingleUser(id, cb) {
-        getUsersFromFile(users => {
-            const user = users.find(u => u.id === id);
-            cb(user);
-        })
+    static fetchSingleUser(id) {
+        const db = getDb();
+
+        return db.collection('users').find({_id: new mongodb.ObjectId(id)}).next()
+            .then(result => {
+                return result;
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 }

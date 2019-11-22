@@ -1,7 +1,7 @@
 const express = require('express');
-const handlebars = require('express-handlebars');
 const bodyParser = require('body-parser');
 const path = require('path');
+const dbConnection = require('./utils/database');
 const app = express();
 const PORT = process.env.port || 4444;
 
@@ -25,8 +25,8 @@ app.get('/page-not-found', (req, res, next) => {
     });
 });
 
-// app.use('/', (req, res, next) => {
-//     res.redirect('/page-not-found');
-// });
-
+app.use('/', (req, res, next) => {
+    res.redirect('/page-not-found');
+});
 app.listen(PORT, () => { console.log(`Port is running on port ${PORT}`)});
+dbConnection.dbConnection();

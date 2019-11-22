@@ -2,19 +2,16 @@ const Task = require('../models/task');
 const User = require('../models/user');
 
 exports.getTasks = (req, res, next) => {
-    Task.fetchAllTasks((tasks) => {
-        if(tasks.toString()) {
+    Task.fetchAllTasks()
+        .then(result => {
             res.render('tasks-list', {
                 pageTitle: 'Tasks list',
-                tasksList: JSON.parse(tasks)
+                tasksList: result,
             });
-        } else {
-            res.render('tasks-list', {
-                pageTitle: 'Tasks list',
-                tasksList: undefined
-            });
-        }
-    })
+        })
+        .catch(error => {
+            console.log(error);
+        })
 };
 
 exports.getAddTask = (req, res, next) => {
@@ -25,15 +22,27 @@ exports.getAddTask = (req, res, next) => {
 };
 
 exports.getSingleTask = (req, res, next) => {
-    Task.fetchSingleTask(req.params.id, task => {
-        User.fetchUsers((users) => {
+    let AllUsers;
+    User.fetchUsers()
+        .then(users => {
+            AllUsers = users;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+    Task.fetchSingleTask(req.params.id)
+        .then(task => {
+
             res.render('single-task', {
                 pageTitle: task.title,
                 task: task,
-                users: JSON.parse(users)
+                users: AllUsers
             });
-        });
-    })
+        })
+        .catch(error => {
+            console.log(error);
+        })
 };
 
 exports.postAddTask = (req, res, next) => {
@@ -44,22 +53,25 @@ exports.postAddTask = (req, res, next) => {
 };
 
 exports.getEditTask = (req, res, next) => {
-    const edit = req.query.edit;
-    if (edit) {
-        Task.fetchSingleTask(req.params.id, task => {
+    Task.fetchSingleTask(req.params.id)
+        .then(task => {
             res.render('add-task', {
-                pageTitle: task.title,
+                pageTitle: 'Add new task',
                 task: task,
-                editable: edit
+                editable: true
             });
         })
-    } else {
-        res.redirect('/tasks');
-    }
-}
+        .catch(error => {
+            console.log(error);
+        })
+};
 
 exports.postEditTask = (req, res, next) => {
-    const updatedTask = new Task(req.body);
-    updatedTask.update(req.params.id);
-    res.redirect('/tasks');
+    Task.update(req.params.id, req.body)
+        .then(result => {
+            res.redirect('/tasks');
+        })
+        .catch(error => {
+            console.log(error);
+        })
 }

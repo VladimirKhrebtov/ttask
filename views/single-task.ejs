@@ -6,7 +6,7 @@
         <hr>
         <p><%= task.shortdescr %></p>
         <p><%= task.fulldescr %></p>
-        <a href="/add-task/<%= task.id %>?edit=true" class="btn btn-primary">Edit Task</a>
+        <a href="/add-task/<%= task._id %>?edit=true" class="btn btn-primary">Edit Task</a>
         <hr>
         <% if(users) { %>
             <h3>Users available for this task:</h3>
