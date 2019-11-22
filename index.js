@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const dbConnection = require('./utils/database');
 const app = express();
-const PORT = process.env.port;
+const PORT = process.env.port || 5555;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -28,5 +28,5 @@ app.get('/page-not-found', (req, res, next) => {
 app.use('/', (req, res, next) => {
     res.redirect('/page-not-found');
 });
-app.listen(PORT, () => { console.log(`Port is running on port ${PORT}`)});
+app.listen(PORT, '0.0.0.0', () => { console.log(`Port is running on port ${PORT}`)});
 dbConnection.dbConnection();
