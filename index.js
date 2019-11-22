@@ -28,5 +28,5 @@ app.get('/page-not-found', (req, res, next) => {
 app.use('/', (req, res, next) => {
     res.redirect('/page-not-found');
 });
-app.listen(PORT, '0.0.0.0', () => { console.log(`Port is running on port ${PORT}`)});
+app.listen(PORT, '0.0.0.0', () => { console.log(`Server is running on port ${PORT}`)});
 dbConnection.dbConnection();
