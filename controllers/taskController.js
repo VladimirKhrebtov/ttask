@@ -68,10 +68,20 @@ exports.getEditTask = (req, res, next) => {
 
 exports.postEditTask = (req, res, next) => {
     Task.update(req.params.id, req.body)
-        .then(result => {
+        .then(() => {
             res.redirect('/tasks');
         })
         .catch(error => {
             console.log(error);
         })
-}
+};
+
+exports.deleteTask = (req, res, next) => {
+    Task.delete(req.params.id)
+        .then(() => {
+            res.redirect('/tasks');
+        })
+        .catch(error => {
+            console.log(error);
+        })
+};

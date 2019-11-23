@@ -1,5 +1,5 @@
 const mongodb = require('mongodb');
-const getDb = require('../utils/database');
+const getDb = require('../utils/database').getDb;
 
 const getTasksFromFile = cb => {
     fs.readFile('tasks.json', (err, data) => {
@@ -16,7 +16,7 @@ module.exports = class Task {
     }
 
     save() {
-        const db = getDb.getDb();
+        const db = getDb();
         db.collection('tasks').insertOne(this)
             .then(result => {
                 // console.log(result);
@@ -27,13 +27,23 @@ module.exports = class Task {
     }
 
     static update(id, params) {
-        console.log(params);
-        const db = getDb.getDb();
+        const db = getDb();
         return db.collection('tasks').updateOne({_id: mongodb.ObjectId(id)}, { $set: params });
     }
 
+    static delete(id) {
+        const db = getDb();
+        return db.collection('tasks').deleteOne({ _id: mongodb.ObjectId(id) })
+            .then(() => {
+                console.log('Task Deleted');
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
     static fetchAllTasks() {
-        const db = getDb.getDb();
+        const db = getDb();
 
         return db.collection('tasks').find()
             .toArray()
@@ -46,7 +56,7 @@ module.exports = class Task {
     }
 
     static fetchSingleTask(id) {
-        const db = getDb.getDb();
+        const db = getDb();
 
         return db.collection('tasks').find({_id: new mongodb.ObjectId(id)}).next()
             .then(result => {

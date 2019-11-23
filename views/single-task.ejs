@@ -7,6 +7,10 @@
         <p><%= task.shortdescr %></p>
         <p><%= task.fulldescr %></p>
         <a href="/add-task/<%= task._id %>?edit=true" class="btn btn-primary">Edit Task</a>
+        <form action="/delete-task/<%= task._id %>" method="POST">
+            <br>
+            <button type="submit" class="btn btn-danger">Delete task</button>
+        </form>
         <hr>
         <% if(users) { %>
             <h3>Users available for this task:</h3>

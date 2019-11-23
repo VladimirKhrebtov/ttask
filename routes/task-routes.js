@@ -15,4 +15,6 @@ router.post('/add-task', taskController.postAddTask);
 
 router.post('/edit-task/:id', taskController.postEditTask);
 
+router.post('/delete-task/:id', taskController.deleteTask);
+
 exports.router = router;
