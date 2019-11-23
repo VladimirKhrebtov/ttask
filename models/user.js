@@ -20,6 +20,17 @@ module.exports = class User {
             })
     }
 
+    static delete(id) {
+        const db = getDb();
+        return db.collection('users').deleteOne({ _id: new mongodb.ObjectId(id)})
+            .then(() => {
+                console.log('User deleted');
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
     static fetchUsers() {
         const db = getDb();
 

@@ -28,7 +28,6 @@ exports.getAllUsersController = (req, res, next) => {
 exports.getSingleUser = (req, res, next) => {
     User.fetchSingleUser(req.params.id)
         .then(user => {
-            console.log(user);
             res.render('single-user', {
                 pageTitle: req.body.username,
                 user: user
@@ -38,3 +37,14 @@ exports.getSingleUser = (req, res, next) => {
             console.log(error);
         })
 };
+
+exports.deleteUser = (req, res, next) => {
+    User.delete(req.params.id)
+        .then(() => {
+            console.log('User deleted');
+            res.redirect('/all-users');
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+}

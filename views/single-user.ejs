@@ -6,6 +6,9 @@
         <h2><%= user.secondname %></h2>
         <hr>
         <p><%= user.userposition %></p>
+        <form action="/delete-user/<%= user._id %>" method="POST">
+            <button type="submit" class="btn btn-danger">Delete user</button>
+        </form>
     </div>
 </main>
 <%- include("includes/footer.ejs"); %>
